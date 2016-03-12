@@ -1,1 +1,1 @@
-* Surynamascara
+* Suryanamascara
