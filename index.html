@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<head>
+<title>Ashtanga practice</title>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 20px consolas;
+  shape-rendering: crispEdges;
+  background: wheat;
+}
+
+.year:first-of-type {
+  margin-top: 60px;
+}
+
+.day {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.pie {
+  shape-rendering: initial;
+}
+
+.night {
+  fill: #EDEDED;
+  stroke: #ccc;
+}
+
+.month {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.legend {
+  position: absolute;
+  top: 30px;
+  left: 0;
+}
+
+.round {
+  float: left;
+  margin-left: 150px;
+  margin-top: 25px;
+}
+
+.RdYlGn .q0-11{fill:rgb(165,0,38)}
+.RdYlGn .q1-11{fill:rgb(215,48,39)}
+.RdYlGn .q2-11{fill:rgb(244,109,67)}
+.RdYlGn .q3-11{fill:rgb(253,174,97)}
+.RdYlGn .q4-11{fill:rgb(254,224,139)}
+.RdYlGn .q5-11{fill:rgb(255,255,191)}
+.RdYlGn .q6-11{fill:rgb(217,239,139)}
+.RdYlGn .q7-11{fill:rgb(166,217,106)}
+.RdYlGn .q8-11{fill:rgb(102,189,99)}
+.RdYlGn .q9-11{fill:rgb(26,152,80)}
+.RdYlGn .q10-11{fill:rgb(0,104,55)}
+
+</style>
+</head>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+var cellSize = 25, // cell size
+    width = cellSize * 5 * 12,
+    height = cellSize * 8 + 1;
+
+var meldi = 0, wat = [];
+
+var percent = d3.format("1%"),
+    format = d3.time.format("%Y-%m-%d");
+
+var color = d3.scale.quantize()
+    .domain([1,10])
+    .range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));
+
+var svg = d3.select("body").selectAll("svg")
+    .data(d3.range(2016, new Date().getFullYear() + 1))
+  .enter().append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "RdYlGn year")
+  .append("g")
+    .attr("transform", "translate(" + cellSize * 6 + ",1)");
+
+svg.append("text")
+    .attr("transform", "translate(-10," + cellSize * 3.5 + ")rotate(-90)")
+    .style("text-anchor", "middle")
+    .text(function(d) { return d; });
+
+var rect = svg.selectAll(".day")
+    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+  .enter().append("rect")
+    .attr("class", function(d) { return (new Date(d)<new Date()) ? "day" : "night"; })
+    .attr("width", cellSize)
+    .attr("height", cellSize)
+    .attr("x", function(d) { return d3.time.weekOfYear(d) * cellSize; })
+    .attr("y", function(d) { return d.getDay() * cellSize; })
+    .datum(format);
+
+rect.append("title")
+    .text(function(d) { return d; });
+
+svg.selectAll(".month")
+    .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+  .enter().append("path")
+    .attr("class", "month")
+    .attr("d", monthPath);
+
+d3.csv("practice.csv", function(error, csv) {
+  if (error) throw error;
+
+  var data = d3.nest()
+    .key(function(d) { return d.date; })
+    .rollup(function(d) {
+      var cosa = new Date(meldi);
+      meldi = d[0].date;
+      var diff = (new Date(meldi) - cosa)/60/60/24/1000;
+      wat.push(diff);
+      return (diff);
+    })
+    .map(csv);
+
+  rect.filter(function(d) { return d in data; })
+      .attr("class", function(d) { return "day " + color(data[d]); })
+    .select("title")
+      .text(function(d) { return d + ": " + data[d]; });
+
+  wat.shift();
+
+  var grouped = d3.nest()
+    .key(function(d) { return d; })
+    .rollup(function(v) { return v.length; })
+    .entries(wat);
+
+  pieChart(grouped);
+
+});
+
+function monthPath(t0) {
+  var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+      d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+      d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+  return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
+      + "H" + w0 * cellSize + "V" + 7 * cellSize
+      + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
+      + "H" + (w1 + 1) * cellSize + "V" + 0
+      + "H" + (w0 + 1) * cellSize + "Z";
+}
+
+var legendBox = d3.select("body").append("svg")
+    .attr("class","legend RdYlGn")
+    .attr("height", cellSize * 12)
+    .attr("width", cellSize * 4)
+
+var legend = legendBox.selectAll("g")
+    .data(d3.range(-1,12))
+    .enter().append("g")
+    .attr("transform", function(d,i) { return "translate(0," + i * cellSize + ")"; });
+
+legend.append("rect")
+    .attr("class", "RdYlGn")
+    .attr("width", cellSize)
+    .attr("height", cellSize)
+    .attr("y", 0)
+    .attr("x", "2em")
+    .attr("class", function(d) { return "q" + (10 - d) + "-11"; })
+
+legend.append("text")
+    .attr("x", "3em")
+    .attr("y", 0)
+    .attr("dy", "1em")
+    .attr("dx", ".5em")
+    .text(function(d) { return d+1; });
+
+function pieChart(data1){
+  console.log(data1);
+  var w = 300,                        //width
+      h = 300,                            //height
+      r = 100,                            //radius
+      color2 = d3.scale.category20c();     //builtin range of colors
+
+      var vis = d3.select("body")
+          .append("svg:svg")              //create the SVG element inside the <body>
+          .data([data1])                   //associate our data with the document
+              .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+              .attr("height", h)
+              .attr("class", "RdYlGn round")
+              .attr("transform", "translate(" + cellSize * 6 + ",0)")
+          .append("svg:g")                //make a group to hold our pie chart
+              .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+
+      var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
+          .innerRadius(r/2).outerRadius(r);
+
+      var pie = d3.layout.pie()           //this will create arc data for us given a list of values
+          .value(function(d) { return d.values; });    //we must tell it out to access the value of each element in our data array
+
+      var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+          .data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties)
+          .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+              .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+                  .attr("class", "pie");    //allow us to style things in the slices (like text)
+
+          arcs.append("svg:path")
+                  .attr("class", function(d, i) { return "q" + (11 - data1[i].key) + "-11"; } ) //set the color for each slice to be chosen from the color function defined above
+                  .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+
+          arcs.append("svg:text")                                     //add a label to each slice
+                  .attr("transform", function(d,i) {                    //set the label's origin to the center of the arc
+                  //we have to make sure to set these before calling arc.centroid
+                  d.innerRadius = 0;
+                  d.outerRadius = r;
+                  return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+              })
+              .attr("text-anchor", "middle")                          //center the text on it's origin
+              .text(function(d,i) { return data1[i].key; });        //get the label from our original data array
+
+}
+
+    </script>
+  </body>
+
+</script>
