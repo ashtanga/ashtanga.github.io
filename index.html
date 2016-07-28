@@ -159,6 +159,10 @@ function init(){
 
     wat.shift();
 
+	  var forMonth = d3.nest()
+	    .key(function(d){ return d3.time.month(d3.time.format("%Y-%m-%d").parse(d.date)); })
+	    .entries(csv);
+
     var grouped = d3.nest()
       .key(function(d) { return d; })
       .rollup(function(v) { return v.length; })
@@ -179,8 +183,10 @@ function init(){
           .attr("y", 7.7 * cellSize )
           .style("text-anchor", "middle")
           .text(function(d,i) {
-            var cosi = 0;
-            if(montly[i]) cosi = montly[i].values;
+            // var cosi = 0;
+            // if(montly[i]) cosi = montly[i].values;
+			      // USE forMonth
+		      	var cosi = forMonth[new Date(d).getMonth()].values.length;
             if(cosi>0) return ( monthNameFormat(new Date(d)) + ' ' + cosi ); else return '';
           });
 
