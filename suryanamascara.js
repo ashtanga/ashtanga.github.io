@@ -21,16 +21,9 @@ function practice (e) {
 	).then(
 		function (l) {
 			var sha = l.sha;
-			return atob(l.content);
-		}
-	).then(
-		function (c) {
+			var cnt = atob(l.content);
 			var newDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
-			return (c + newDate);
-		}
-	).then(
-		function (n) {
-			// console.log(btoa(n));
+			var newfile = cnt + newDate;
 			return fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
 				method: 'POST',
 				headers: {
