@@ -40,7 +40,7 @@ function practice (e) {
 				message: 'Update practice.csv by button',
 				sha: sha,
 				content: btoa(n)
-			}).then(window.location.reload);
+			});
 		}
 	).then(window.location.reload());
 }
