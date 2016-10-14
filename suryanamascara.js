@@ -42,5 +42,5 @@ function practice (e) {
 				content: btoa(n)
 			});
 		}
-	).then(window.location.reload());
+	).then(console.log);
 }
