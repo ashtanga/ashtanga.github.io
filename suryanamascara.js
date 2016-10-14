@@ -30,7 +30,7 @@ function practice (e) {
 				content: btoa(newfile)
 			};
 			return fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
-				method: 'POST',
+				method: 'PUT',
 				headers: {
 					Authorization: 'token ' + atob(localFnp.token),
 					Accept: 'application/vnd.github.v3.full+json'
