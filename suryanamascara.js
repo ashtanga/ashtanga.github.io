@@ -32,7 +32,7 @@ function practice (e) {
 				},
 				message: 'Update practice.csv by button',
 				sha: sha,
-				content: btoa(n)
+				content: btoa(newfile)
 			});
 		}
 	).then(console.log);
