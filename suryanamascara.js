@@ -24,15 +24,18 @@ function practice (e) {
 			var cnt = atob(l.content);
 			var newDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
 			var newfile = cnt + newDate;
+			var requestData = {
+				message: 'Update practice.csv by button',
+				sha: sha,
+				content: btoa(newfile)
+			};
 			return fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
 				method: 'POST',
 				headers: {
 					Authorization: 'token ' + atob(localFnp.token),
 					Accept: 'application/vnd.github.v3.full+json'
 				},
-				message: 'Update practice.csv by button',
-				sha: sha,
-				content: btoa(newfile)
+				body: JSON.stringify(requestData)
 			});
 		}
 	).then(console.log);
