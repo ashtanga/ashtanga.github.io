@@ -38,5 +38,5 @@ function practice (e) {
 				body: JSON.stringify(requestData)
 			});
 		}
-	).then(console.log);
+	).then(window.location.reload());
 }
