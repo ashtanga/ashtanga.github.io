@@ -2,7 +2,7 @@ if (loggator()) {
 	// Append button
 	var surya = document.createElement('button');
 	surya.innerHTML = 'Surya Namascara';
-	document.body.appendChild(surya);
+	document.querySelector('footer').appendChild(surya);
 	// Retrieve token
 	var localFnp = localStorage.getObject('fnp');
 	surya.addEventListener('click', practice);
