@@ -36,7 +36,7 @@ function practice (e) {
 					Accept: 'application/vnd.github.v3.full+json'
 				},
 				body: JSON.stringify(requestData)
-			});
+			}).then(window.location.reload());
 		}
-	).then(window.location.reload());
+	);
 }
