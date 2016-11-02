@@ -22,7 +22,7 @@ function practice (e) {
 		function (l) {
 			var sha = l.sha;
 			var cnt = atob(l.content);
-			var newDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+			var newDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + ('0' + new Date().getDate()).slice(-2);
 			var newfile = cnt + newDate + "\n";
 			var requestData = {
 				message: 'Update practice.csv by button',
