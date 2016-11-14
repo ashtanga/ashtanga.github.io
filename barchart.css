@@ -1,12 +1,14 @@
 #barchart,
-#baryear{
+#baryear,
+#barweek{
 	background-color: transparent;
 	width: 1328px;
 	margin-left: 150px;
 	margin-top: 1em;
 }
 #barchart span,
-#baryear span{
+#baryear span,
+#barweek span{
 	display: inline-block;
 	text-align: center;
 	padding: 1em 0;

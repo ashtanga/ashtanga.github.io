@@ -76,11 +76,17 @@ function init(){
 	  .key(function(d){ return d3.time.month(d3.time.format("%Y-%m-%d").parse(d.date)); })
 	  .entries(csv);
 
+	var forWeekDay = d3.nest()
+	  .key(function(d){ return d3.time.format("%Y-%m-%d").parse(d.date).getDay(); })
+	  .entries(csv);
+
     var grouped = d3.nest()
       .key(function(d) { return d; })
       .rollup(function(v) { return v.length; })
       .entries(wat);
 
+	barchart(grouped);
+	barweek(forWeekDay, Object.keys(data).length);
     pieChart(grouped);
 
     var montly = d3.nest()
@@ -142,7 +148,6 @@ function init(){
       .text(function(d) { return d+1; });
 
   function pieChart(data1){
-	barchart(data1);
     var w = 300,                        //width
         h = 300,                            //height
         r = 100;                            //radius
@@ -185,7 +190,9 @@ function init(){
   }
 }
 // ---------------------------
-
+function proporzioni(small,big,ref){
+	return Math.floor(small*ref/big);
+}
 function barchart(d){
 	var	arra = [],
 		bardiv = document.getElementById('barchart'),
@@ -207,7 +214,7 @@ function barchart(d){
 	for (var i = 0; i < boxes.length; i++) {
 		var	bb = boxes[i],
 			bv = bb.getAttribute('data-value');
-		bb.setAttribute('style', 'width:' + Math.floor((bv * 1328)/sum) + 'px;');
+		bb.setAttribute('style', 'width:' + proporzioni(bv,sum,1328) + 'px;');
 	}
 	baryear(sum);
 }
@@ -218,14 +225,13 @@ function baryear(s) {
 		nopract = document.createElement('span'),
 		dayyear = 366-dayofyear(),
 		tocome = document.createElement('span');
-	console.log(dayyear);
 	pract.classList.add('q2-11');
-	pract.setAttribute('style', 'width:' + Math.floor((s * 1328)/366) + 'px;');
+	pract.setAttribute('style', 'width:' + proporzioni(s,365,1328) + 'px;');
 	pract.innerHTML = s;
 	nopract.classList.add('q4-11');
-	nopract.setAttribute('style', 'width:' + Math.floor(((365-s-dayyear) * 1328)/366) + 'px;');
+	nopract.setAttribute('style', 'width:' + proporzioni((365-s-dayyear),365,1328) + 'px;');
 	nopract.innerHTML = 365-s-dayyear;
-	tocome.setAttribute('style', 'width:' + Math.floor((dayyear * 1328)/366) + 'px;background-color:#EDEDED;');
+	tocome.setAttribute('style', 'width:' + proporzioni(dayyear,365,1328) + 'px;background-color:#EDEDED;');
 	tocome.innerHTML = dayyear;
 	baryeardiv.appendChild(pract);
 	baryeardiv.appendChild(nopract);
@@ -238,7 +244,32 @@ function dayofyear () {
 	var oneDay = 1000 * 60 * 60 * 24;
 	return Math.floor(diff / oneDay);
 }
-
+function barweek(w, big){
+	var	bardiv = document.getElementById('barweek'),
+		weekday = [];
+	var max = d3.max(d3.values(w));
+	console.log(max);
+	var color = d3.scale.quantize()
+		.domain([30,15])
+		.range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));
+	weekday[0]=  "Sun";
+	weekday[1] = "Mon";
+	weekday[2] = "Tue";
+	weekday[3] = "Wed";
+	weekday[4] = "Thu";
+	weekday[5] = "Fri";
+	weekday[6] = "Sat";
+	for (var i = 0; i < w.length; i++) {
+		var	wd = w[i].key,
+			hm = w[i].values.length,
+			span = document.createElement('span');
+		span.classList.add(color(hm));
+		span.innerHTML = weekday[wd] + ' ' + hm;
+		span.setAttribute('style', 'width:' + proporzioni(hm,big,1328) + 'px;');
+		span.setAttribute('data-color', color(hm));
+		bardiv.appendChild(span);
+	}
+}
 function chiamato(url){
   var xhr = new XMLHttpRequest();
   xhr.open ( 'GET', url, true );
