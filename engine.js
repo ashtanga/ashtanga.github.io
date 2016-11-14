@@ -142,6 +142,7 @@ function init(){
       .text(function(d) { return d+1; });
 
   function pieChart(data1){
+	barchart(data1);
     var w = 300,                        //width
         h = 300,                            //height
         r = 100;                            //radius
@@ -184,6 +185,59 @@ function init(){
   }
 }
 // ---------------------------
+
+function barchart(d){
+	var	arra = [],
+		bardiv = document.getElementById('barchart'),
+		sum = 0;
+	for (var key in d) {
+		if (d.hasOwnProperty(key)) {
+			var	u = d[key],
+				box = document.createElement('span');
+			// u = { key: "1", values: 41 }
+			sum += u.values;
+			box.innerHTML = u.values;
+			var cl = 'q' + (11 - u.key) + '-11';
+			box.setAttribute('data-value', u.values);
+			box.classList.add(cl);
+			bardiv.appendChild(box);
+		}
+	}
+	var boxes = bardiv.querySelectorAll('span');
+	for (var i = 0; i < boxes.length; i++) {
+		var	bb = boxes[i],
+			bv = bb.getAttribute('data-value');
+		bb.setAttribute('style', 'width:' + Math.floor((bv * 1328)/sum) + 'px;');
+	}
+	baryear(sum);
+}
+
+function baryear(s) {
+	var baryeardiv = document.getElementById('baryear'),
+		pract = document.createElement('span'),
+		nopract = document.createElement('span'),
+		dayyear = 366-dayofyear(),
+		tocome = document.createElement('span');
+	console.log(dayyear);
+	pract.classList.add('q2-11');
+	pract.setAttribute('style', 'width:' + Math.floor((s * 1328)/366) + 'px;');
+	pract.innerHTML = s;
+	nopract.classList.add('q4-11');
+	nopract.setAttribute('style', 'width:' + Math.floor(((365-s-dayyear) * 1328)/366) + 'px;');
+	nopract.innerHTML = 365-s-dayyear;
+	tocome.setAttribute('style', 'width:' + Math.floor((dayyear * 1328)/366) + 'px;background-color:#EDEDED;');
+	tocome.innerHTML = dayyear;
+	baryeardiv.appendChild(pract);
+	baryeardiv.appendChild(nopract);
+	baryeardiv.appendChild(tocome);
+}
+function dayofyear () {
+	var now = new Date();
+	var start = new Date(now.getFullYear(), 0, 0);
+	var diff = now - start;
+	var oneDay = 1000 * 60 * 60 * 24;
+	return Math.floor(diff / oneDay);
+}
 
 function chiamato(url){
   var xhr = new XMLHttpRequest();
