@@ -85,6 +85,12 @@ function init(){
       .rollup(function(v) { return v.length; })
       .entries(wat);
 
+	var	now = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),
+		practicedToday = data.hasOwnProperty(now),
+		body = d3.select("body"),
+		bodyColor = practicedToday ? body.style("background-color", "#ebbe6a") : body.style("background-color", "lightgrey"),
+		snButton = d3.select("footer button"),
+		notToday = (practicedToday && snButton) ? snButton.style("display", "none") : false;
 	barchart(grouped);
 	barweek(forWeekDay, Object.keys(data).length);
     pieChart(grouped);
@@ -248,7 +254,6 @@ function barweek(w, big){
 	var	bardiv = document.getElementById('barweek'),
 		weekday = [];
 	var max = d3.max(d3.values(w));
-	console.log(max);
 	var color = d3.scale.quantize()
 		.domain([30,15])
 		.range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));

@@ -1,7 +1,7 @@
 body {
   font: 18px Consolas,monaco,monospace;
   shape-rendering: crispEdges;
-  background: #ebbe6a;
+  background: white; /* invisible */
   background-image: url(ashtanga_logo.svg);
   background-repeat: no-repeat;
   background-position: bottom;
