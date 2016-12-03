@@ -85,7 +85,7 @@ function init(){
       .rollup(function(v) { return v.length; })
       .entries(wat);
 
-	var	now = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),
+	var	now = new Date().getFullYear()+'-'+('0' + (new Date().getMonth()+1)).slice(-2)+'-'+('0' + new Date().getDate()).slice(-2),
 		practicedToday = data.hasOwnProperty(now),
 		body = d3.select("body"),
 		bodyColor = practicedToday ? body.style("background-color", "#ebbe6a") : body.style("background-color", "lightgrey"),
