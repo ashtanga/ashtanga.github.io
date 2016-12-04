@@ -18,7 +18,7 @@ function init(){
   var yearNameFormat = d3.time.format("%y");
 
   var svg = d3.select("section#years").selectAll("svg")
-      .data(d3.range(2016, new Date().getFullYear() + 1))
+      .data(d3.range(2016, new Date().getFullYear() + 1)) // HERE TO DEBUG NEXT YEAR = 2
     .enter().append("svg")
       .attr("width", width)
       .attr("height", height)
@@ -41,9 +41,20 @@ function init(){
       .attr("y", function(d) { return d.getDay() * cellSize; })
       .datum(format);
 
-  rect.append("title")
-      .text(function(d) { return d; });
+	  // week day on first year column
+	  var wd = svg.selectAll(".wday")
+	      .data(["S", "M", "T", "W", "T", "F", "S"])
+	    .enter().append("text")
+	      .attr("x", function(d) { return cellSize/3; })
+	      .attr("y", function(d,i) { return i * cellSize + cellSize*3/4; })
+		  .attr("fill", "grey")
+	      .text(function(d) { return d; });
 
+  // rect.append("text")
+  //     .attr("x", 10)
+  //     .text(function(d) { return d; });
+
+	// draw month PATH
   svg.selectAll(".month")
       .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
     .enter().append("path")
@@ -75,6 +86,22 @@ function init(){
 	var forMonth = d3.nest()
 	  .key(function(d){ return d3.time.month(d3.time.format("%Y-%m-%d").parse(d.date)); })
 	  .entries(csv);
+	console.log(forMonth);
+
+	// PRINT MONTH SUM
+  // svg.selectAll(".summonth")
+  //     .data(forMonth)
+  //   .enter().append("text")
+  //     .attr("class", "summonth")
+  //  .attr("x", function (d) { return ( d3.time.weekOfYear(d) + 2 ) * cellSize; })
+  //  .attr("y", 7.7 * cellSize)
+  //     .text(function (d) { return ; })
+  //  .text(function (d,i) {
+  //   var cosi = 0;
+  //   return monthNameFormat(d) + forMonth[i].values.length;
+  // //   if (typeof forMonth[new Date(d).getMonth()] !== 'undefined' ) cosi = forMonth[new Date(d).getMonth()].values.length;
+  // //   if(cosi>0) return ( monthNameFormat(new Date(d)) + ' ' + cosi ); else return '';
+  //  });
 
 	var forWeekDay = d3.nest()
 	  .key(function(d){ return d3.time.format("%Y-%m-%d").parse(d.date).getDay(); })
@@ -210,7 +237,7 @@ function barchart(d){
 			// u = { key: "1", values: 41 }
 			sum += u.values;
 			box.innerHTML = u.values;
-			var cl = 'q' + (11 - u.key) + '-11';
+			var cl = 'q' + Math.max(11 - u.key, 0) + '-11';
 			box.setAttribute('data-value', u.values);
 			box.classList.add(cl);
 			bardiv.appendChild(box);
@@ -231,10 +258,10 @@ function baryear(s) {
 		nopract = document.createElement('span'),
 		dayyear = 366-dayofyear(),
 		tocome = document.createElement('span');
-	pract.classList.add('q2-11');
+	pract.classList.add('q8-11');
 	pract.setAttribute('style', 'width:' + proporzioni(s,365,1328) + 'px;');
 	pract.innerHTML = s;
-	nopract.classList.add('q4-11');
+	nopract.classList.add('q3-11');
 	nopract.setAttribute('style', 'width:' + proporzioni((365-s-dayyear),365,1328) + 'px;');
 	nopract.innerHTML = 365-s-dayyear;
 	tocome.setAttribute('style', 'width:' + proporzioni(dayyear,365,1328) + 'px;background-color:#EDEDED;');
@@ -293,6 +320,8 @@ function chiamato(url){
 function risposta(xhr){
   if(xhr) resp = JSON.parse(xhr.responseText); else resp = { object: { sha: 'master' } };
   fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + resp.object.sha + "/practice.csv";
+  // DEBUG GIST FILE
+  // fileUrl = "https://cdn.rawgit.com/petrosh/cc819ea69538dbbffdeafe21b08fbf22/raw/e97c2ed1715a18a6930a5e1c6db336dbba2ce6d6/practice.csv";
   document.querySelector('a.bottom').innerHTML = resp.object.sha + "/practice.csv";
   init();
 }
