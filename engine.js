@@ -1,4 +1,4 @@
-chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master");
+chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());
 
 function init(){
   var cellSize = 25, // cell size
@@ -84,7 +84,8 @@ function init(){
     wat.shift();
 
 	var forMonth = d3.nest()
-	  .key(function(d){ return d3.time.month(d3.time.format("%Y-%m-%d").parse(d.date)); })
+	  .key(function(d) { var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.year(dt); })
+	  .key(function(d){ var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.month(dt); })
 	  .entries(csv);
 	console.log(forMonth);
 
@@ -138,8 +139,9 @@ function init(){
             // var cosi = 0;
             // if(montly[i]) cosi = montly[i].values;
 			      // USE forMonth
-		      	var cosi = 0;
-				if (typeof forMonth[new Date(d).getMonth()] !== 'undefined' ) cosi = forMonth[new Date(d).getMonth()].values.length;
+		      	var cosi = 0, yr=new Date(d).getFullYear(), yrindex=yr-2016;
+				// console.log(yrindex,new Date(d).getMonth(),forMonth[yrindex]['values'][new Date(d).getMonth()]);
+				if (forMonth[yrindex] && typeof forMonth[yrindex].values[new Date(d).getMonth()] !== 'undefined') cosi = forMonth[yrindex].values[new Date(d).getMonth()].values.length;
             if(cosi>0) return ( monthNameFormat(new Date(d)) + ' ' + cosi ); else return '';
           });
 
@@ -256,15 +258,16 @@ function baryear(s) {
 	var baryeardiv = document.getElementById('baryear'),
 		pract = document.createElement('span'),
 		nopract = document.createElement('span'),
-		dayyear = 366-dayofyear(),
-		tocome = document.createElement('span');
+		dayyear = 365-dayofyear(),
+		tocome = document.createElement('span'),
+		daysToCome = 365 * (new Date().getFullYear() - 2016 + 1 );
 	pract.classList.add('q8-11');
-	pract.setAttribute('style', 'width:' + proporzioni(s,365,1328) + 'px;');
+	pract.setAttribute('style', 'width:' + proporzioni(s,daysToCome,1328) + 'px;');
 	pract.innerHTML = s;
 	nopract.classList.add('q3-11');
-	nopract.setAttribute('style', 'width:' + proporzioni((365-s-dayyear),365,1328) + 'px;');
-	nopract.innerHTML = 365-s-dayyear;
-	tocome.setAttribute('style', 'width:' + proporzioni(dayyear,365,1328) + 'px;background-color:#EDEDED;');
+	nopract.setAttribute('style', 'width:' + proporzioni((daysToCome-s-dayyear),daysToCome,1328) + 'px;');
+	nopract.innerHTML = daysToCome-s-dayyear;
+	tocome.setAttribute('style', 'width:' + proporzioni(dayyear,daysToCome,1328) + 'px;background-color:#EDEDED;');
 	tocome.innerHTML = dayyear;
 	baryeardiv.appendChild(pract);
 	baryeardiv.appendChild(nopract);
