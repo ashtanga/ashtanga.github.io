@@ -1,15 +1,24 @@
 if (loggator()) {
-	// Append button
+	// Append Today button
 	var surya = document.createElement('button');
-	surya.innerHTML = 'Surya Namascara';
+	surya.innerHTML = 'Today';
 	surya.id = 'snButton';
 	document.querySelector('footer').appendChild(surya);
 	// Retrieve token
 	var localFnp = localStorage.getObject('fnp');
 	surya.addEventListener('click', practice);
+	// Append Yesterday button
+	var suryaye = document.createElement('button');
+	suryaye.innerHTML = 'Yesterday';
+	suryaye.id = 'yeButton';
+	// DEBUG: DONT SHOW YESTERDAY BUTTON
+	// document.querySelector('footer').appendChild(suryaye);
+	// Add listener
+	suryaye.addEventListener('click', function(e) { practice(e, true); }, false );
 }
 
-function practice (e) {
+function practice (e, yesterday) {
+	yesterday = yesterday || false;
 	e.preventDefault();
 	fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
 		method: 'GET',
@@ -23,7 +32,9 @@ function practice (e) {
 		function (l) {
 			var sha = l.sha;
 			var cnt = atob(l.content);
-			var newDate = new Date().getFullYear() + '-' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '-' + ('0' + new Date().getDate()).slice(-2);
+			var date = new Date();
+			var giornoPratica = (yesterday) ? date.setDate(date.getDate() - 1) : date;
+			var newDate = giornoPratica.getFullYear() + '-' + ('0' + (giornoPratica.getMonth() + 1)).slice(-2) + '-' + ('0' + giornoPratica.getDate()).slice(-2);
 			var newfile = cnt + newDate + "\n";
 			var requestData = {
 				message: 'Update practice.csv by button',
