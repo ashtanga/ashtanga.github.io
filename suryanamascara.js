@@ -48,7 +48,7 @@ function practice (e, yesterday) {
 					Accept: 'application/vnd.github.v3.full+json'
 				},
 				body: JSON.stringify(requestData)
-			}).then(console.log); // was window.location.reload()
+			}).then(function(r){return r.json();}).then(console.log); // was window.location.reload()
 		}
 	);
 }
