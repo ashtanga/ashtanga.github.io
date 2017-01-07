@@ -1,4 +1,4 @@
-chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());
+chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master");
 
 function init(){
   var cellSize = 25, // cell size
