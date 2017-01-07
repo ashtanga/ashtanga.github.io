@@ -48,7 +48,20 @@ function practice (e, yesterday) {
 					Accept: 'application/vnd.github.v3.full+json'
 				},
 				body: JSON.stringify(requestData)
-			}).then(function(r){return r.json();}).then(console.log); // was window.location.reload()
+			}).then(
+				function(r){
+					return r.json();
+				}
+			).then(
+				function(payload){
+					console.log('payload', payload);
+					if(payload.commit.sha.length == 40){
+						var oldurl = window.location.origin;
+						console.log('new url', oldurl + '/#' + payload.commit.sha);
+						window.location.href = oldurl + '/#' + payload.commit.sha;
+					}
+				}
+			).then(console.log); // was window.location.reload()
 		}
 	);
 }
