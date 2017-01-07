@@ -4,7 +4,7 @@ if(window.location.hash && window.location.hash.length == 41){
 	fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + window.location.hash.substr(1) + "/practice.csv";
 	document.querySelector('a.bottom').innerHTML = window.location.hash.substr(1) + "/practice.csv";
 	init();
-}else chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master");
+}else chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());
 
 function init(){
   var cellSize = 25, // cell size
