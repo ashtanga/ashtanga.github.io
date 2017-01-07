@@ -47,7 +47,7 @@ function init(){
 	    .enter().append("text")
 	      .attr("x", function(d) { return cellSize/3; })
 	      .attr("y", function(d,i) { return i * cellSize + cellSize*3/4; })
-		  .attr("fill", "grey")
+		  .attr("fill", "black")
 	      .text(function(d) { return d; });
 
   // rect.append("text")
@@ -87,7 +87,7 @@ function init(){
 	  .key(function(d) { var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.year(dt); })
 	  .key(function(d){ var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.month(dt); })
 	  .entries(csv);
-	console.log(forMonth);
+	// console.log(forMonth);
 
 	// PRINT MONTH SUM
   // svg.selectAll(".summonth")
