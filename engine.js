@@ -3,6 +3,7 @@ var fileUrl;
 if(window.location.hash && window.location.hash.length == 41){
 	fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + window.location.hash.substr(1) + "/practice.csv";
 	document.querySelector('a.bottom').innerHTML = window.location.hash.substr(1) + "/practice.csv";
+	window.location.href = window.location.pathname;
 	init();
 }else chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());
 
