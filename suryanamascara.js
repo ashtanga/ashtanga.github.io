@@ -54,14 +54,13 @@ function practice (e, yesterday) {
 				}
 			).then(
 				function(payload){
-					console.log('payload', payload);
 					if(payload.commit.sha.length == 40){
 						var oldurl = window.location.origin;
-						console.log('new url', oldurl + '/#' + payload.commit.sha);
 						window.location.href = oldurl + '/#' + payload.commit.sha;
+						window.location.reload();
 					}
 				}
-			).then(console.log); // was window.location.reload()
+			).catch(console.log);
 		}
 	);
 }
