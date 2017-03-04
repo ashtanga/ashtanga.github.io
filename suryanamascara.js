@@ -20,7 +20,7 @@ if (loggator()) {
 function practice (e, yesterday) {
 	yesterday = yesterday || false;
 	e.preventDefault();
-	fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
+	fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/_data/practice.csv',{
 		method: 'GET',
 		headers: {
 			Authorization: 'token ' + atob(localFnp.token),
@@ -41,7 +41,7 @@ function practice (e, yesterday) {
 				sha: sha,
 				content: btoa(newfile)
 			};
-			return fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/practice.csv',{
+			return fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/_data/practice.csv',{
 				method: 'PUT',
 				headers: {
 					Authorization: 'token ' + atob(localFnp.token),
