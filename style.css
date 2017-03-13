@@ -27,7 +27,7 @@ button:focus { outline:0; }
 main { min-height: 40em; }
 footer > p { text-align: center; }
 .year:first-of-type {
-  margin-top: 60px;
+  /*margin-top: 60px;*/
 }
 
 .day {
@@ -55,14 +55,14 @@ footer > p { text-align: center; }
 }
 
 .legend {
-  position: absolute;
+  /*position: absolute;
   top: 30px;
-  left: 0;
+  left: 0;*/
 }
 
 .round {
-  padding-left: 150px;
-  padding-top: 20px;
+  /*padding-left: 150px;
+  padding-top: 20px;*/
   padding-top: 50px;
   font-size: smaller;
 }
