@@ -9,7 +9,7 @@ if(window.location.hash && window.location.hash.length == 41){
 
 function init(){
   var cellSize = 25, // cell size
-      width = cellSize * 5 * 12,
+      width = cellSize * 53.7,
       height = cellSize * 8 + 1;
 
   var meldi = 0, wat = [], mon = [];
@@ -33,11 +33,6 @@ function init(){
     .append("g")
       // .attr("transform", "translate(" + cellSize * 6 + ",1)");
 
-  svg.append("text")
-      .attr("transform", "translate(-10," + cellSize * 3.5 + ")rotate(-90)")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d; });
-
   var rect = svg.selectAll(".day")
       .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
     .enter().append("rect")
@@ -47,6 +42,12 @@ function init(){
       .attr("x", function(d) { return d3.time.weekOfYear(d) * cellSize; })
       .attr("y", function(d) { return d.getDay() * cellSize; })
       .datum(format);
+
+
+  svg.append("text")
+      .attr("transform", "translate(" + width + "," + cellSize * 3.5 + ")rotate(-90)")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d; });
 
 	  // week day on first year column
 	  var wd = svg.selectAll(".wday")
