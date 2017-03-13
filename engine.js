@@ -31,7 +31,7 @@ function init(){
       .attr("height", height)
       .attr("class", "RdYlGn year")
     .append("g")
-      .attr("transform", "translate(" + cellSize * 6 + ",1)");
+      // .attr("transform", "translate(" + cellSize * 6 + ",1)");
 
   svg.append("text")
       .attr("transform", "translate(-10," + cellSize * 3.5 + ")rotate(-90)")
@@ -164,7 +164,7 @@ function init(){
     return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize + "H" + w0 * cellSize + "V" + 7 * cellSize + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize + "H" + (w1 + 1) * cellSize + "V" + 0 + "H" + (w0 + 1) * cellSize + "Z";
   }
 
-  var legendBox = d3.select("body").append("svg")
+  var legendBox = d3.select("main").append("svg")
       .attr("class","legend RdYlGn")
       .attr("height", cellSize * 12)
       .attr("width", cellSize * 4);
@@ -291,8 +291,10 @@ function barweek(w, big){
 	var	bardiv = document.getElementById('barweek'),
 		weekday = [];
 	var max = d3.max(d3.values(w));
+	var minimo = d3.min(d3.values(w), function(d) { return d.values.length; });
+	var massimo = d3.max(d3.values(w), function(d) { return d.values.length; });
 	var color = d3.scale.quantize()
-		.domain([30,15])
+		.domain([massimo, minimo - (massimo*0.2)])
 		.range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));
 	weekday[0]=  "Sun";
 	weekday[1] = "Mon";
