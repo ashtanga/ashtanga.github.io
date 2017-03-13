@@ -9,7 +9,7 @@ if(window.location.hash && window.location.hash.length == 41){
 
 function init(){
   var cellSize = 25, // cell size
-      width = cellSize * 53.7,
+      width = cellSize * 53.8,
       height = cellSize * 8 + 1;
 
   var meldi = 0, wat = [], mon = [];
@@ -31,7 +31,7 @@ function init(){
       .attr("height", height)
       .attr("class", "RdYlGn year")
     .append("g")
-      // .attr("transform", "translate(" + cellSize * 6 + ",1)");
+      .attr("transform", "translate(2,2)");
 
   var rect = svg.selectAll(".day")
       .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
@@ -45,7 +45,7 @@ function init(){
 
 
   svg.append("text")
-      .attr("transform", "translate(" + width + "," + cellSize * 3.5 + ")rotate(-90)")
+      .attr("transform", "translate(" + cellSize * 53.65 + "," + cellSize * 3.5 + ")rotate(-90)")
       .style("text-anchor", "middle")
       .text(function(d) { return d; });
 
