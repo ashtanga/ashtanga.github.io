@@ -19,7 +19,7 @@ if (loggator()) {
 
 function practice (e, yesterday) {
 	yesterday = yesterday || false;
-	e.preventDefault();
+	if(e) e.preventDefault();
 	fetch('https://api.github.com/repos/ashtanga/ashtanga.github.io/contents/_data/practice.csv',{
 		method: 'GET',
 		headers: {
