@@ -337,9 +337,9 @@ function chiamato(url){
 
 function risposta(xhr){
   if(xhr) resp = JSON.parse(xhr.responseText); else resp = { object: { sha: 'master' } };
-  // fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + resp.object.sha + "/_data/practice.csv";
+  fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + resp.object.sha + "/_data/practice.csv";
   // DEBUG GIST FILE
-  fileUrl = "https://cdn.rawgit.com/petrosh/cc819ea69538dbbffdeafe21b08fbf22/raw/e97c2ed1715a18a6930a5e1c6db336dbba2ce6d6/practice.csv";
+  // fileUrl = "https://cdn.rawgit.com/petrosh/cc819ea69538dbbffdeafe21b08fbf22/raw/e97c2ed1715a18a6930a5e1c6db336dbba2ce6d6/practice.csv";
   document.querySelector('a.bottom').innerHTML = resp.object.sha + "/_data/practice.csv";
   init();
 }
