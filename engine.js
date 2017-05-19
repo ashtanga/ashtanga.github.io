@@ -315,7 +315,7 @@ function barweek(w, big){
 			span = document.createElement('span');
 		span.classList.add(color(hm));
 		span.innerHTML = weekday[wd] + ' ' + hm;
-		span.setAttribute('style', 'width:' + proporzioni(hm,big,1328) + 'px;');
+		span.setAttribute('style', 'width:' + proporzioni(hm,big,1310) + 'px;');
 		span.setAttribute('data-color', color(hm));
 		bardiv.appendChild(span);
 	}
