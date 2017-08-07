@@ -8,4 +8,4 @@ Demo: https://ashtanga.github.io/
 - [`suryanamascara.js`](suryanamascara.js)
 - [`engine.js`](engine.js)
 
-![Practices](https://cloud.githubusercontent.com/assets/4997583/21581618/96923924-d039-11e6-8260-71bb6e7d83a2.png)
+![292](https://user-images.githubusercontent.com/4997583/29021736-d57f2b78-7b66-11e7-8e4d-df184d2cff7f.png)
