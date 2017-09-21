@@ -3,7 +3,11 @@ if (loggator()) {
 	var surya = document.createElement('button');
 	surya.innerHTML = 'Today';
 	surya.id = 'snButton';
-	document.querySelector('footer').appendChild(surya);
+	// Insert in footer
+	// document.querySelector('footer').appendChild(surya);
+	// insert in main
+	// document.querySelector('main').insertBefore(surya,document.getElementById('years'));
+	document.getElementById('commands').appendChild(surya);
 	// Retrieve token
 	var localFnp = localStorage.getObject('fnp');
 	surya.addEventListener('click', practice);

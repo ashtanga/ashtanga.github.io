@@ -130,7 +130,7 @@ function init(){
 		practicedToday = data.hasOwnProperty(now),
 		body = d3.select("body"),
 		bodyColor = practicedToday ? body.style("background-color", "#ebbe6a") : body.style("background-color", "lightgrey"),
-		snButton = d3.select("footer button"),
+		snButton = d3.select("#commands button"),
 		notToday = (practicedToday && snButton) ? snButton.style("display", "none") : false;
 	barchart(grouped);
 	barweek(forWeekDay, Object.keys(data).length);

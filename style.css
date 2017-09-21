@@ -18,14 +18,14 @@ button{
 	line-height: 1em;
 	background-color: #ffffbf;
 	color: #a50026;
-	margin: 0 auto;
+	margin: 1em auto;
 	display: block;
 }
 button:hover { background-color: transparent; }
 button:active { background-color: #a50026; }
 button:focus { outline:0; }
 main { min-height: 40em; }
-footer > p { text-align: center; }
+#commands > p { text-align: center; }
 .year:first-of-type {
   /*margin-top: 60px;*/
 }
@@ -83,4 +83,8 @@ footer > p { text-align: center; }
 #login_button_div {
 	text-align: center;
 	margin-top: 1em;
+}
+
+footer{
+
 }

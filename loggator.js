@@ -129,8 +129,8 @@ function createLoginForm (event) {
 var loggator = function () {
 	// create form
 	var loginButtonDiv = document.getElementById('login_button_div') ||
-		document.body.appendChild(create('div', {id:'login_button_div'})),
-		loginFormDiv = document.getElementById('login_form_div') || document.body.appendChild(create('div', {id:'login_form_div'})),
+		document.getElementById('commands').appendChild(create('div', {id:'login_button_div'})),
+		loginFormDiv = document.getElementById('login_form_div') || document.getElementById('commands').appendChild(create('div', {id:'login_form_div'})),
 		loginButton = document.getElementById('login_button') || loginButtonDiv.appendChild(create('a', {id:'login_button',href:'#'}, 'Login')),
 		localFnp = localStorage.getObject('fnp');
 	// create login event
