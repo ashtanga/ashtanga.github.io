@@ -1,16 +1,16 @@
 var fileUrl;
 
 if(window.location.hash && window.location.hash.length == 41){
-	fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + window.location.hash.substr(1) + "/_data/practice.csv";
-	document.querySelector('a.bottom').innerHTML = window.location.hash.substr(1) + "/_data/practice.csv";
-	window.location.href = window.location.pathname;
-	init();
+  fileUrl = "https://rawgit.com/ashtanga/ashtanga.github.io/" + window.location.hash.substr(1) + "/_data/practice.csv";
+  document.querySelector('a.bottom').innerHTML = window.location.hash.substr(1) + "/_data/practice.csv";
+  window.location.href = window.location.pathname;
+  init();
 }else if(window.location.hash  == '#practice'){
-	practice();
-	// window.location.href = window.location.pathname;
-	// init();
+  practice();
+  // window.location.href = window.location.pathname;
+  // init();
 }else{
-	chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());}
+  chiamato("https://api.github.com/repos/ashtanga/ashtanga.github.io/git/refs/heads/master?time=" + new Date().getTime());}
 
 function init(){
   var cellSize = 25, // cell size
@@ -54,20 +54,20 @@ function init(){
       .style("text-anchor", "middle")
       .text(function(d) { return d; });
 
-	  // week day on first year column
-	  var wd = svg.selectAll(".wday")
-	      .data(["S", "M", "T", "W", "T", "F", "S"])
-	    .enter().append("text")
-	      .attr("x", function(d) { return cellSize/3; })
-	      .attr("y", function(d,i) { return i * cellSize + cellSize*3/4; })
-		  .attr("fill", "black")
-	      .text(function(d) { return d; });
+    // week day on first year column
+    var wd = svg.selectAll(".wday")
+        .data(["S", "M", "T", "W", "T", "F", "S"])
+      .enter().append("text")
+        .attr("x", function(d) { return cellSize/3; })
+        .attr("y", function(d,i) { return i * cellSize + cellSize*3/4; })
+    .attr("fill", "black")
+        .text(function(d) { return d; });
 
   // rect.append("text")
   //     .attr("x", 10)
   //     .text(function(d) { return d; });
 
-	// draw month PATH
+  // draw month PATH
   svg.selectAll(".month")
       .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
     .enter().append("path")
@@ -96,13 +96,13 @@ function init(){
 
     wat.shift();
 
-	var forMonth = d3.nest()
-	  .key(function(d) { var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.year(dt); })
-	  .key(function(d){ var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.month(dt); })
-	  .entries(csv);
-	// console.log(forMonth);
+  var forMonth = d3.nest()
+    .key(function(d) { var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.year(dt); })
+    .key(function(d){ var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.month(dt); })
+    .entries(csv);
+  // console.log(forMonth);
 
-	// PRINT MONTH SUM
+  // PRINT MONTH SUM
   // svg.selectAll(".summonth")
   //     .data(forMonth)
   //   .enter().append("text")
@@ -117,46 +117,57 @@ function init(){
   // //   if(cosi>0) return ( monthNameFormat(new Date(d)) + ' ' + cosi ); else return '';
   //  });
 
-	var forWeekDay = d3.nest()
-	  .key(function(d){ return d3.time.format("%Y-%m-%d").parse(d.date).getDay(); })
-	  .entries(csv);
+  var forWeekDay = d3.nest()
+    .key(function(d){ return d3.time.format("%Y-%m-%d").parse(d.date).getDay(); })
+    .entries(csv);
 
     var grouped = d3.nest()
       .key(function(d) { return d; })
       .rollup(function(v) { return v.length; })
       .entries(wat);
 
-	var	now = new Date().getFullYear()+'-'+('0' + (new Date().getMonth()+1)).slice(-2)+'-'+('0' + new Date().getDate()).slice(-2),
-		practicedToday = data.hasOwnProperty(now),
-		body = d3.select("body"),
-		bodyColor = practicedToday ? body.style("background-color", "#ebbe6a") : body.style("background-color", "lightgrey"),
-		snButton = d3.select("#commands button"),
-		notToday = (practicedToday && snButton) ? snButton.style("display", "none") : false;
-	barchart(grouped);
-	barweek(forWeekDay, Object.keys(data).length);
-    pieChart(grouped);
+  var	now = new Date().getFullYear()+'-'+('0' + (new Date().getMonth()+1)).slice(-2)+'-'+('0' + new Date().getDate()).slice(-2),
+  practicedToday = data.hasOwnProperty(now),
+  body = d3.select("body"),
+  bodyColor = practicedToday ? body.style("background-color", "#ebbe6a") : body.style("background-color", "lightgrey"),
+  snButton = d3.select("#commands button"),
+  notToday = (practicedToday && snButton) ? snButton.style("display", "none") : false;
+  barchart(grouped);
+  barweek(forWeekDay, Object.keys(data).length);
+  pieChart(grouped);
 
-    var montly = d3.nest()
-      .key(function(d) { return d; })
-      .rollup(function(v) { return v.length; })
-      .entries(mon);
+  var montly = d3.nest()
+    .key(function(d) { return d; })
+    .rollup(function(v) { return v.length; })
+    .entries(mon);
 
-      svg.selectAll(".sums")
-          .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
-        .enter().append("text")
-          .attr("class", "sums")
-          .attr("x", function(d) { return ( d3.time.weekOfYear(d) + 2 ) * cellSize; })
-          .attr("y", 7.7 * cellSize )
-          .style("text-anchor", "middle")
-          .text(function(d,i) {
-            // var cosi = 0;
-            // if(montly[i]) cosi = montly[i].values;
-			      // USE forMonth
-		      	var cosi = 0, yr=new Date(d).getFullYear(), yrindex=yr-2016;
-				// console.log(yrindex,new Date(d).getMonth(),forMonth[yrindex]['values'][new Date(d).getMonth()]);
-				if (forMonth[yrindex] && typeof forMonth[yrindex].values[new Date(d).getMonth()] !== 'undefined') cosi = forMonth[yrindex].values[new Date(d).getMonth()].values.length;
-            if(cosi>0) return ( monthNameFormat(new Date(d)) + ' ' + cosi ); else return '';
-          });
+  //Month is 1 based
+  function daysInMonth(month,year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  svg.selectAll(".sums")
+      .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+    .enter().append("text")
+      .attr("class", "sums")
+      .attr("x", function(d) { return ( d3.time.weekOfYear(d) + 2 ) * cellSize; })
+      .attr("y", 7.7 * cellSize )
+      .style("text-anchor", "middle")
+      .text(function(d,i) {
+        // var cosi = 0;
+        // if(montly[i]) cosi = montly[i].values;
+        // USE forMonth
+        var cosi = 0, yr=new Date(d).getFullYear(), yrindex=yr-2016;
+        var monthZeroBased = new Date(d).getMonth();
+        // console.log(yrindex,new Date(d).getMonth(),forMonth[yrindex]['values'][new Date(d).getMonth()]);
+        if (forMonth[yrindex] && typeof forMonth[yrindex].values[monthZeroBased] !== 'undefined') cosi = forMonth[yrindex].values[monthZeroBased].values.length;
+        if(cosi>0) {
+          var perc = ( cosi / daysInMonth(monthZeroBased, yr) ) * 100;
+          return ( monthNameFormat(new Date(d)) + ' ' + cosi + ' ' + perc.toFixed(1) );
+        } else {
+          return '';
+        }
+      });
 
     // var lnk = d3.select("body")
     //   .append("a").attr('href', 'https://github.com/ashtanga/ashtanga.github.io/edit/master/practice.csv').text('practice.csv');
@@ -239,86 +250,86 @@ function init(){
 }
 // ---------------------------
 function proporzioni(small,big,ref){
-	return Math.floor(small*ref/big);
+  return Math.floor(small*ref/big);
 }
 function barchart(d){
-	var	arra = [],
-		bardiv = document.getElementById('barchart'),
-		sum = 0;
-	for (var key in d) {
-		if (d.hasOwnProperty(key)) {
-			var	u = d[key],
-				box = document.createElement('span');
-			// u = { key: "1", values: 41 }
-			sum += u.values;
-			box.innerHTML = u.values;
-			var cl = 'q' + Math.max(11 - u.key, 0) + '-11';
-			box.setAttribute('data-value', u.values);
-			box.classList.add(cl);
-			bardiv.appendChild(box);
-		}
-	}
-	var boxes = bardiv.querySelectorAll('span');
-	for (var i = 0; i < boxes.length; i++) {
-		var	bb = boxes[i],
-			bv = bb.getAttribute('data-value');
-		bb.setAttribute('style', 'width:' + proporzioni(bv,sum,1328) + 'px;');
-	}
-	baryear(sum);
+  var	arra = [],
+  bardiv = document.getElementById('barchart'),
+  sum = 0;
+  for (var key in d) {
+  if (d.hasOwnProperty(key)) {
+  var	u = d[key],
+  box = document.createElement('span');
+  // u = { key: "1", values: 41 }
+  sum += u.values;
+  box.innerHTML = u.values;
+  var cl = 'q' + Math.max(11 - u.key, 0) + '-11';
+  box.setAttribute('data-value', u.values);
+  box.classList.add(cl);
+  bardiv.appendChild(box);
+  }
+  }
+  var boxes = bardiv.querySelectorAll('span');
+  for (var i = 0; i < boxes.length; i++) {
+  var	bb = boxes[i],
+  bv = bb.getAttribute('data-value');
+  bb.setAttribute('style', 'width:' + proporzioni(bv,sum,1328) + 'px;');
+  }
+  baryear(sum);
 }
 
 function baryear(s) {
-	var baryeardiv = document.getElementById('baryear'),
-		pract = document.createElement('span'),
-		nopract = document.createElement('span'),
-		dayyear = 365-dayofyear(),
-		tocome = document.createElement('span'),
-		daysToCome = 365 * (new Date().getFullYear() - 2016 + 1 );
-	pract.classList.add('q8-11');
-	pract.setAttribute('style', 'width:' + proporzioni(s,daysToCome,1328) + 'px;');
-	pract.innerHTML = s;
-	nopract.classList.add('q3-11');
-	nopract.setAttribute('style', 'width:' + proporzioni((daysToCome-s-dayyear),daysToCome,1328) + 'px;');
-	nopract.innerHTML = daysToCome-s-dayyear;
-	tocome.setAttribute('style', 'width:' + proporzioni(dayyear,daysToCome,1328) + 'px;background-color:#EDEDED;');
-	tocome.innerHTML = dayyear;
-	baryeardiv.appendChild(pract);
-	baryeardiv.appendChild(nopract);
-	baryeardiv.appendChild(tocome);
+  var baryeardiv = document.getElementById('baryear'),
+  pract = document.createElement('span'),
+  nopract = document.createElement('span'),
+  dayyear = 365-dayofyear(),
+  tocome = document.createElement('span'),
+  daysToCome = 365 * (new Date().getFullYear() - 2016 + 1 );
+  pract.classList.add('q8-11');
+  pract.setAttribute('style', 'width:' + proporzioni(s,daysToCome,1328) + 'px;');
+  pract.innerHTML = s;
+  nopract.classList.add('q3-11');
+  nopract.setAttribute('style', 'width:' + proporzioni((daysToCome-s-dayyear),daysToCome,1328) + 'px;');
+  nopract.innerHTML = daysToCome-s-dayyear;
+  tocome.setAttribute('style', 'width:' + proporzioni(dayyear,daysToCome,1328) + 'px;background-color:#EDEDED;');
+  tocome.innerHTML = dayyear;
+  baryeardiv.appendChild(pract);
+  baryeardiv.appendChild(nopract);
+  baryeardiv.appendChild(tocome);
 }
 function dayofyear () {
-	var now = new Date();
-	var start = new Date(now.getFullYear(), 0, 0);
-	var diff = now - start;
-	var oneDay = 1000 * 60 * 60 * 24;
-	return Math.floor(diff / oneDay);
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = now - start;
+  var oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
 }
 function barweek(w, big){
-	var	bardiv = document.getElementById('barweek'),
-		weekday = [];
-	var max = d3.max(d3.values(w));
-	var minimo = d3.min(d3.values(w), function(d) { return d.values.length; });
-	var massimo = d3.max(d3.values(w), function(d) { return d.values.length; });
-	var color = d3.scale.quantize()
-		.domain([massimo, minimo - (massimo*0.2)])
-		.range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));
-	weekday[0]=  "Sun";
-	weekday[1] = "Mon";
-	weekday[2] = "Tue";
-	weekday[3] = "Wed";
-	weekday[4] = "Thu";
-	weekday[5] = "Fri";
-	weekday[6] = "Sat";
-	for (var i = 0; i < w.length; i++) {
-		var	wd = w[i].key,
-			hm = w[i].values.length,
-			span = document.createElement('span');
-		span.classList.add(color(hm));
-		span.innerHTML = weekday[wd] + ' ' + hm;
-		span.setAttribute('style', 'width:' + proporzioni(hm,big,1310) + 'px;');
-		span.setAttribute('data-color', color(hm));
-		bardiv.appendChild(span);
-	}
+  var	bardiv = document.getElementById('barweek'),
+  weekday = [];
+  var max = d3.max(d3.values(w));
+  var minimo = d3.min(d3.values(w), function(d) { return d.values.length; });
+  var massimo = d3.max(d3.values(w), function(d) { return d.values.length; });
+  var color = d3.scale.quantize()
+  .domain([massimo, minimo - (massimo*0.2)])
+  .range(d3.range(11).map(function(d) { return "q" + (10 - d) + "-11"; }));
+  weekday[0]=  "Sun";
+  weekday[1] = "Mon";
+  weekday[2] = "Tue";
+  weekday[3] = "Wed";
+  weekday[4] = "Thu";
+  weekday[5] = "Fri";
+  weekday[6] = "Sat";
+  for (var i = 0; i < w.length; i++) {
+  var	wd = w[i].key,
+  hm = w[i].values.length,
+  span = document.createElement('span');
+  span.classList.add(color(hm));
+  span.innerHTML = weekday[wd] + ' ' + hm;
+  span.setAttribute('style', 'width:' + proporzioni(hm,big,1310) + 'px;');
+  span.setAttribute('data-color', color(hm));
+  bardiv.appendChild(span);
+  }
 }
 function chiamato(url){
   var xhr = new XMLHttpRequest();
