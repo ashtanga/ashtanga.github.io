@@ -6,6 +6,8 @@ body {
   background-repeat: no-repeat;
   background-position: bottom;
   background-blend-mode: overlay;
+	padding: 0;
+	margin: 0;
 }
 a{ color: inherit; text-decoration: none; }
 a:hover{ text-decoration: underline; }
@@ -25,7 +27,11 @@ button:hover { background-color: transparent; }
 button:active { background-color: #a50026; }
 button:focus { outline:0; }
 main { min-height: 40em; }
-#commands > p { text-align: center; }
+#commands > p {
+	text-align: center;
+	margin: 0;
+	padding: 1em;
+}
 .year:first-of-type {
   /*margin-top: 60px;*/
 }
