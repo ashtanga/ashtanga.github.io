@@ -146,6 +146,8 @@ function init(){
     return new Date(year, month, 0).getDate();
   }
 
+
+  var perMonth = [];
   svg.selectAll(".sums")
       .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
     .enter().append("text")
@@ -163,16 +165,21 @@ function init(){
         if (forMonth[yrindex] && typeof forMonth[yrindex].values[monthZeroBased] !== 'undefined') cosi = forMonth[yrindex].values[monthZeroBased].values.length;
         if(cosi>0) {
           var perc = ( cosi / daysInMonth(monthZeroBased, yr) ) * 100;
+          perMonth.push({date: new Date(d), practices: cosi });
           return ( monthNameFormat(new Date(d)) + ' ' + cosi + ' ' + perc.toFixed(1) );
         } else {
           return '';
         }
-      });
+      }); 
 
     // var lnk = d3.select("body")
     //   .append("a").attr('href', 'https://github.com/ashtanga/ashtanga.github.io/edit/master/practice.csv').text('practice.csv');
-
+    sayHi(perMonth);
   });
+
+  var sayHi = function(perMonth) {
+    console.log(perMonth);
+  };
 
   function monthPath(t0) {
     var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
@@ -253,6 +260,7 @@ function proporzioni(small,big,ref){
   return Math.floor(small*ref/big);
 }
 function barchart(d){
+  // console.log(d);
   var	arra = [],
   bardiv = document.getElementById('barchart'),
   sum = 0;
