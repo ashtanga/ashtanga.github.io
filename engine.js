@@ -97,8 +97,18 @@ function init(){
     wat.shift();
 
   var forMonth = d3.nest()
-    .key(function(d) { var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.year(dt); })
-    .key(function(d){ var dt = d3.time.format("%Y-%m-%d").parse(d.date); return d3.time.month(dt); })
+    .key(function(d) {
+      if (d.date) {
+        var dt = d3.time.format("%Y-%m-%d").parse(d.date);
+        return d3.time.year(dt);
+      }
+    })
+    .key(function(d){
+      if (d.date) {
+        var dt = d3.time.format("%Y-%m-%d").parse(d.date);
+        return d3.time.month(dt);
+      }
+    })
     .entries(csv);
   // console.log(forMonth);
 
@@ -118,7 +128,11 @@ function init(){
   //  });
 
   var forWeekDay = d3.nest()
-    .key(function(d){ return d3.time.format("%Y-%m-%d").parse(d.date).getDay(); })
+    .key(function(d){
+      if (d.date) {
+        return d3.time.format("%Y-%m-%d").parse(d.date).getDay();
+      }
+    })
     .entries(csv);
 
     var grouped = d3.nest()
